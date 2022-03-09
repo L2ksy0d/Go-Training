@@ -1,7 +1,7 @@
 <?php
 namespace Deobf;
 
-class GlobalTable{
+class GlobalTable{ 
     static $variablevalue = [];
 
     public function getvariablevalue($name)
