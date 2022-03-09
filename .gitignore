@@ -1,0 +1,11 @@
+/vendor/
+/.idea/
+/.vscode/
+/vendor-bin/
+*.phar
+/build/
+/website/
+/webshell/
+/php_2000/
+composer.lock
+*.csv
