@@ -6,6 +6,7 @@ use PhpParser\PrettyPrinter;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\NodeVisitorAbstract;
+use Deobf\GlobalTable;
 
 class VariableVisitor extends NodeVisitorAbstract
 {
@@ -15,6 +16,7 @@ class VariableVisitor extends NodeVisitorAbstract
     public function __construct()
     {
         $this->prettyPrinter = new PrettyPrinter\Standard;
+        $this->globaldata = new GlobalTable;
     }
 
     public function enterNode(Node $node) {
@@ -29,6 +31,16 @@ class VariableVisitor extends NodeVisitorAbstract
             }elseif($node->expr instanceof Node\Expr\FuncCall){
                 $expr = $this->prettyPrinter->prettyPrintExpr($node->expr);
                 $result = "";
+                $pattan = '/\$[_a-zA-Z][A-Za-z0-9_]*/';
+                preg_match_all($pattan, $expr, $pat_array);
+                if(!empty($pat_array[0])){
+                    foreach($pat_array[0] as $value){
+                        $ret = "'".$this->globaldata->getvariablevalue(substr($value,1))."'";
+                        if($ret){
+                            $expr = str_replace($value,$ret,$expr);
+                        }
+                    }
+                }
                 try{
                     eval("\$result = $expr;");
                     return new Node\Expr\Assign($node->var,new Node\Scalar\String_("$result"));

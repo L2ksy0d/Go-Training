@@ -25,8 +25,11 @@ class VariableValueVisitor extends NodeVisitorAbstract
             $name = $node->var->name;
             $value = $node->expr->value;
             $this->globaldata->setvariablevalue($name,$value);
-            $this->globaldata->outputdata();
         }
-        
+    }
+
+    public function afterTraverse(array $nodes)
+    {
+            $this->globaldata->outputdata();
     }
 }
