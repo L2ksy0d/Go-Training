@@ -7,5 +7,3 @@ $parr = "sss";
 $str = "sssaaabbb";
 $d = str_replace($parr,$b,$str);
 eval($a);
-
-
