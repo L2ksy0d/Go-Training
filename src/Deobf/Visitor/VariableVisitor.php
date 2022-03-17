@@ -35,7 +35,8 @@ class VariableVisitor extends NodeVisitorAbstract
                 preg_match_all($pattan, $expr, $pat_array);
                 if(!empty($pat_array[0])){
                     foreach($pat_array[0] as $value){
-                        $ret = "'".$this->globaldata->getvariablevalue(substr($value,1))."'";
+                        $ret = $this->globaldata->getvariablevalue(substr($value,1));
+                        $ret = "'".addcslashes($ret,"'")."'";
                         if($ret){
                             $expr = str_replace($value,$ret,$expr);
                         }

