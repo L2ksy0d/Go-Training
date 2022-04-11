@@ -18,4 +18,8 @@ class GlobalTable{
     {
         var_dump(self::$variablevalue);
     }
+
+    public function intable($name){
+        return isset(self::$variablevalue[$name]);
+    }
 }

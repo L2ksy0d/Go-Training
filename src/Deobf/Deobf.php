@@ -1,6 +1,9 @@
 <?php
 namespace Deobf;
 
+use Deobf\HelperVisitor\BinaryOPReducer;
+use Deobf\HelperVisitor\FuncallReducer;
+use Deobf\HelperVisitor\VariableReducer;
 use DI\ContainerBuilder;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
@@ -45,11 +48,16 @@ class Deobf
 
     protected function bootstrapVisitor(array $visitors){
         try{
+            $this->traverser->addVisitor(new PreVisitor);
             foreach($visitors as $visitor_name){
                 $class = $this->container->get($visitor_name);
                 $this->traverser->addVisitor($class);
             }
+            $this->traverser->addVisitor(new NameResolver);
             $this->traverser->addVisitor(new ParentConnectingVisitor);
+            //$this->traverser->addVisitor(new VariableReducer); 
+            $this->traverser->addVisitor(new BinaryOPReducer);
+            $this->traverser->addVisitor(new FuncallReducer);   
         }catch(\DI\DependencyException $e){
             print_r('----------');
             print_r($e->getMessage());
