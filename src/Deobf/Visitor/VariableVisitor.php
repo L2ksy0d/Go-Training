@@ -36,8 +36,23 @@ class VariableVisitor extends NodeVisitorAbstract
                 $name = $node->var->name;
                 $value = $node->expr->value;
                 $this->globaldata->setvariablevalue($name,$value);
-            }elseif($node->expr instanceof Node\Stmt){
-                
+            }elseif($node->expr instanceof Node\Expr\Array_){
+                $value = $node->expr->items;
+                foreach($value as $key => $nodevalue){
+                    if($nodevalue->key != NULL){
+                        if($nodevalue->key instanceof Node\Scalar\String_){
+                            $namekey = "'".$nodevalue->key->value."'";
+                        }elseif($nodevalue->key instanceof Node\Scalar\LNumber){
+                            $namekey = $nodevalue->key->value;
+                        }
+                        
+                    }else{
+                        $namekey = $key;
+                    }
+                    $namevalue = $nodevalue->value->value;
+                    $name = $node->var->name.'['.$namekey.']';
+                    $this->globaldata->setvariablevalue($name,$namevalue);
+                }
             }elseif($node->expr instanceof Node\Expr\FuncCall && $node->name instanceof Node\Name){
                 $name = $node->var->name;
                 $expr = $this->prettyPrinter->prettyPrintExpr($node->expr);

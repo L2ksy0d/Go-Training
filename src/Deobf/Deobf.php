@@ -1,6 +1,8 @@
 <?php
 namespace Deobf;
 
+
+use Deobf\HelperVisitor\AddOriginalVisitor;
 use Deobf\HelperVisitor\BinaryOPReducer;
 use Deobf\HelperVisitor\FuncallReducer;
 use Deobf\HelperVisitor\VariableReducer;
@@ -17,9 +19,11 @@ class Deobf
     protected $container;
     protected $traverser;
     protected $vistiors;
+    protected $original;
 
-    public function __construct(array $visitors)
+    public function __construct(array $visitors,$result,$original)
     {
+        $this->original = $original;
         $this->bootstrapContainer();
         $this->bootstrapParser();
             array_unshift($visitors, \PhpParser\NodeVisitor\NameResolver::class);
@@ -52,6 +56,9 @@ class Deobf
             foreach($visitors as $visitor_name){
                 $class = $this->container->get($visitor_name);
                 $this->traverser->addVisitor($class);
+            }
+            if($this->original){
+                $this->traverser->addVisitor(new AddOriginalVisitor);
             }
             $this->traverser->addVisitor(new NameResolver);
             $this->traverser->addVisitor(new ParentConnectingVisitor);
