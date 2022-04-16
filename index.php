@@ -1,6 +1,9 @@
 <?php
 
+use Deobf\Deobf;
 use Deobf\DeobfFactory;
+use Deobf\Output;
+use Deobf\Feature\feature;
 use Symfony\Component\Finder\Finder;
 
 require 'vendor/autoload.php';
@@ -9,6 +12,9 @@ ini_set('xdebug.max_nesting_level', 100000000000);
 ini_set('memory_limit', '-1');
 
 $finder = new Finder();
+$output = new Output;
+$feature = new feature;
+
 $cmd_arr = getopt('p:');
 $original = 0;
 if(empty(getopt('p:'))){
@@ -54,7 +60,21 @@ foreach($finder as $file){
         if($code === '<?php '){
             $code = $file_contents;
         }
-        $alarm = $factory->detect($file_name, $code,$original);
+        $arr = explode("\n",$file_contents);
+        foreach($arr as $key => $value){
+            if($maxlenth < strlen($value)){
+                $maxlenth = strlen($value);
+                $maxline = $key + 1;
+            }
+        }
+        $output->getcsvdata('MAX',$maxlenth);
+        $output->getcsvdata('LT',strlen(str_replace("\n", '', $file_contents)));
+        $output->getcsvdata('NAME',array(str_replace(",","%2C",$file_name)));
+        $output->entropy($file_name);
+        if(in_array('-f',$argv)){
+            $feature->extract_feature($code);
+        }
+        $alarm = $factory->detect($file_name, $code,$original,$feature);
     } catch (PhpParser\Error $e) {
         //echo "aa";
     }

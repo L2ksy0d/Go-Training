@@ -14,10 +14,9 @@ class DeobfManager
         }
     }
 
-    public function detect(string $file_name, string $code,$original){
+    public function detect(string $file_name, string $code,$original,$feature){
         $this->original = $original;
         $result = array();
-        echo "original = ".$this->original;
         $feature_ex= new Deobf($this->visitor_classes, $result,$this->original);
         return $feature_ex->feed($file_name, $code);;
     }

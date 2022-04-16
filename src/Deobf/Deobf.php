@@ -5,7 +5,13 @@ namespace Deobf;
 use Deobf\HelperVisitor\AddOriginalVisitor;
 use Deobf\HelperVisitor\BinaryOPReducer;
 use Deobf\HelperVisitor\FuncallReducer;
-use Deobf\HelperVisitor\VariableReducer;
+use Deobf\Feature\BinaryopVisitor;
+use Deobf\Feature\ConditionStmtVisitor;
+use Deobf\Feature\DangerFunctionVisitor;
+use Deobf\Feature\GlobalVariableVisitor;
+use Deobf\Feature\LongestVarVisitor;
+use Deobf\Feature\ScriptTagVisitor;
+use Deobf\HelperVisitor\ConfuseFunctionVisitor;
 use DI\ContainerBuilder;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
@@ -20,6 +26,7 @@ class Deobf
     protected $traverser;
     protected $vistiors;
     protected $original;
+    protected $add;
 
     public function __construct(array $visitors,$result,$original)
     {
@@ -52,6 +59,16 @@ class Deobf
 
     protected function bootstrapVisitor(array $visitors){
         try{
+            if(True){
+                // $this->traverser->addVisitor(new BinaryopVisitor);
+                // $this->traverser->addVisitor(new ConditionStmtVisitor);
+                //$this->traverser->addVisitor(new ConfuseFunctionVisitor);
+                // $this->traverser->addVisitor(new DangerFunctionVisitor);
+                // $this->traverser->addVisitor(new LongestVarVisitor);
+                // $this->traverser->addVisitor(new ScriptTagVisitor);
+                // $this->traverser->addVisitor(new GlobalVariableVisitor);
+                // $this->traverser->addVisitor(new VariableNameVisitor);
+            }
             $this->traverser->addVisitor(new PreVisitor);
             foreach($visitors as $visitor_name){
                 $class = $this->container->get($visitor_name);
@@ -81,8 +98,16 @@ class Deobf
             $stmts = $this->parser->parse($code);
             $stmts = $this->traverser->traverse($stmts);
             $new_code = $this->prettyPrinter->prettyPrintFile($stmts);
+            echo "----------------------------------------------------\n";
+            echo "            PHP  Code  Deobfucate  Result           \n";
+            echo "----------------------------------------------------\n";
+            echo "Original  PHP  Code:|\n";
+            echo "--------------------\n";
             echo $code.PHP_EOL;
-            echo "--After parser:--\n\n".$new_code."\n";
+            echo "----------------------------------------------------\n";
+            echo "After Deobfucate PHP Code:|\n";
+            echo "--------------------------\n";
+            echo $new_code.PHP_EOL;
         }catch (\PhpParser\Error $e) {
             //print_r($e);
         }
