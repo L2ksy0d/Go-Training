@@ -5,13 +5,7 @@ namespace Deobf;
 use Deobf\HelperVisitor\AddOriginalVisitor;
 use Deobf\HelperVisitor\BinaryOPReducer;
 use Deobf\HelperVisitor\FuncallReducer;
-use Deobf\Feature\BinaryopVisitor;
-use Deobf\Feature\ConditionStmtVisitor;
-use Deobf\Feature\DangerFunctionVisitor;
-use Deobf\Feature\GlobalVariableVisitor;
-use Deobf\Feature\LongestVarVisitor;
-use Deobf\Feature\ScriptTagVisitor;
-use Deobf\HelperVisitor\ConfuseFunctionVisitor;
+use Deobf\HelperVisitor\ControlFlowVisitor;
 use DI\ContainerBuilder;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
@@ -77,11 +71,13 @@ class Deobf
             if($this->original){
                 $this->traverser->addVisitor(new AddOriginalVisitor);
             }
+            
             $this->traverser->addVisitor(new NameResolver);
             $this->traverser->addVisitor(new ParentConnectingVisitor);
             //$this->traverser->addVisitor(new VariableReducer); 
             $this->traverser->addVisitor(new BinaryOPReducer);
-            $this->traverser->addVisitor(new FuncallReducer);   
+            $this->traverser->addVisitor(new FuncallReducer); 
+            //$this->traverser->addVisitor(new ControlFlowVisitor);  
         }catch(\DI\DependencyException $e){
             print_r('----------');
             print_r($e->getMessage());

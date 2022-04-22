@@ -26,10 +26,7 @@ class NodeUtil
             $fname_info['type'] = 'arr';
             return $fname_info;
         }elseif($node->name instanceof \PhpParser\Node\Name){
-            echo "aaaa";
-            // $fname_info['name'] = $node->name->var->name;
-            // $fname_info['type'] = 'arr';
-            // return $fname_info;
+            
         }else{
             //print_r("unknown node");
         }

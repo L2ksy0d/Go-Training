@@ -4,6 +4,7 @@ use Deobf\Deobf;
 use Deobf\DeobfFactory;
 use Deobf\Output;
 use Deobf\Feature\feature;
+use Deobf\GlobalTable;
 use Symfony\Component\Finder\Finder;
 
 require 'vendor/autoload.php';
@@ -14,6 +15,7 @@ ini_set('memory_limit', '-1');
 $finder = new Finder();
 $output = new Output;
 $feature = new feature;
+$datatable = new GlobalTable;
 
 $cmd_arr = getopt('p:');
 $original = 0;
@@ -48,6 +50,8 @@ if($flag){
 foreach($finder as $file){
     $maxlenth = 0;
     $maxline = 0;
+    $datatable->setvariablevalue("FILE",$file->getRealPath());
+    $datatable->setvariablevalue("DIR",dirname($file->getRealPath()));
     $file_name = $file->getPathname();
     $file_contents = file_get_contents($file);
     $php_script_pattern = '/<script language=\"php\">([\s\S]*?)<\/script>+/i';

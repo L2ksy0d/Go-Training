@@ -25,9 +25,10 @@ class MagicConstVisitor extends NodeVisitorAbstract
     __METHOD__
     __TRAIT__
     */
+    protected $datatable;
     public function __construct()
     {
-        
+        $this->datatable = new GlobalTable;
     }
 
     public function leaveNode(Node $node) {
@@ -35,13 +36,13 @@ class MagicConstVisitor extends NodeVisitorAbstract
         用来还原所有的系统常量节点
         */
         if($node instanceof Scalar\MagicConst\Dir){
-            $dir = __DIR__;
+            $dir = $this->datatable->getvariablevalue("DIR");
             return new Node\Scalar\String_("$dir");
         }elseif($node instanceof Scalar\MagicConst\Line){
             $line = $node->getAttribute('startLine');
             return new Node\Scalar\String_("$line");
         }elseif($node instanceof Scalar\MagicConst\File){
-            $file = __FILE__;
+            $file = $this->datatable->getvariablevalue("FILE");
             return new Node\Scalar\String_("$file");
         }elseif($node instanceof Scalar\MagicConst\Class_){
             $findtype = 'Stmt_Class';
