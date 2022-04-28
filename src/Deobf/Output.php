@@ -111,7 +111,7 @@ class Output
         //var_dump(self::$output);
 	    //file_put_contents("php://stdout", json_encode(self::$output,JSON_UNESCAPED_SLASHES). PHP_EOL, FILE_APPEND | LOCK_EX);
         echo "----------------------------------------------------\n";
-        echo "               Feature Extract Result               \n";
+        echo "               \033[36mFeature Extract Result\033[0m               \n";
         echo "----------------------------------------------------\n";
         echo json_encode(self::$output,JSON_UNESCAPED_SLASHES)."\n";
         echo "\n";

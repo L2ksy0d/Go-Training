@@ -95,13 +95,13 @@ class Deobf
             $stmts = $this->traverser->traverse($stmts);
             $new_code = $this->prettyPrinter->prettyPrintFile($stmts);
             echo "----------------------------------------------------\n";
-            echo "            PHP  Code  Deobfucate  Result           \n";
+            echo "            \033[31mPHP  Code  Deobfucate  Result\033[0m           \n";
             echo "----------------------------------------------------\n";
-            echo "Original  PHP  Code:|\n";
+            echo "\033[33mOriginal  PHP  Code:\033[0m|\n";
             echo "--------------------\n";
             echo $code.PHP_EOL;
-            echo "----------------------------------------------------\n";
-            echo "After Deobfucate PHP Code:|\n";
+            echo "--------------------------\n";
+            echo "\033[32mAfter Deobfucate PHP Code:\033[0m|\n";
             echo "--------------------------\n";
             echo $new_code.PHP_EOL;
         }catch (\PhpParser\Error $e) {

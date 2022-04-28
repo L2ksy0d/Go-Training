@@ -129,13 +129,15 @@ class BinaryOPReducer extends NodeVisitorAbstract
         if($this->isValue($node->left) && $this->isValue($node->right)){
             return $this->assignBinaryOp($node->left->value, $node->right->value, $op);
         }
-        elseif ($this->isString($node->left) && $this->isString($node->right)) {
+        if($this->isString($node->left) && $this->isString($node->right)) {
             return $this->assignBinaryOp($node->left->value, $node->right->value, $op);
         }
-        elseif($this->isConcat($node->left)){
+        if($this->isConcat($node->left)){
             return $this->assignBinaryOpHandler($node->left,'concat');
         }
-        elseif($this->isVariable($node->left) && $this->isVariable($node->right)){
+        if($this->isVariable($node->left) && $this->isVariable($node->right)){
+            //echo "left:".$node->left->name."\n";
+            //echo "right:".$node->right->name."\n";
             if($this->isVariable($node->left)){
                 $left_value = $this->globaldata->getvariablevalue($node->left->name);
             }
@@ -144,7 +146,19 @@ class BinaryOPReducer extends NodeVisitorAbstract
             }
             return $this->assignBinaryOp($left_value,$right_value,$op);
         }
-        elseif($this->isFuncCall($node->left)){
+        if($this->isVariable($node->left) && $this->isString($node->right)){
+            $left_value = $this->globaldata->getvariablevalue($node->left->name);
+            $right_value = $node->right->value;
+            return $this->assignBinaryOp($left_value, $right_value, $op);
+        }
+        if($this->isVariable($node->right) && $this->isString($node->left)){
+            //echo "debug";
+            $right_value = $this->globaldata->getvariablevalue($node->right->name);
+            $left_value = $node->left->value;
+            return $this->assignBinaryOp($left_value, $right_value, $op);
+        }
+        if($this->isFuncCall($node->left)){
+            echo "left";
             $expr = $this->prettyPrinter->prettyPrintExpr($node->left);
             $pattan = '/\$[_a-zA-Z][A-Za-z0-9_]*/';
             $result = '';
@@ -165,6 +179,7 @@ class BinaryOPReducer extends NodeVisitorAbstract
             return $this->assignBinaryOpHandler($node, $op);
         }
         elseif($this->isFuncCall($node->right)){
+            echo "right";
             $expr = $this->prettyPrinter->prettyPrintExpr($node->right);
             $pattan = '/\$[_a-zA-Z][A-Za-z0-9_]*/';
             $result = '';

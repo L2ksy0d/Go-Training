@@ -1,10 +1,12 @@
 <?php
 
+use Deobf\Banner;
 use Deobf\Deobf;
 use Deobf\DeobfFactory;
 use Deobf\Output;
 use Deobf\Feature\feature;
 use Deobf\GlobalTable;
+use Deobf\Yara;
 use Symfony\Component\Finder\Finder;
 
 require 'vendor/autoload.php';
@@ -16,8 +18,15 @@ $finder = new Finder();
 $output = new Output;
 $feature = new feature;
 $datatable = new GlobalTable;
+$banner = new Banner;
+$yara = [];
+$banner->original();
+if(in_array('-h',$argv)){
+    $banner->help();
+    exit;
+}
 
-$cmd_arr = getopt('p:');
+$cmd_arr = getopt('p:y:');
 $original = 0;
 if(empty(getopt('p:'))){
     die("Enter the scan path after -p\n"); 
@@ -34,6 +43,7 @@ if(empty(getopt('p:'))){
         }
     }
 }
+
 $orig = in_array('-o',$argv);
 if($orig){
     $original = 1; 
@@ -51,6 +61,7 @@ foreach($finder as $file){
     $maxlenth = 0;
     $maxline = 0;
     $datatable->setvariablevalue("FILE",$file->getRealPath());
+    $yara['filepath'] = $file->getRealPath();
     $datatable->setvariablevalue("DIR",dirname($file->getRealPath()));
     $file_name = $file->getPathname();
     $file_contents = file_get_contents($file);
@@ -82,5 +93,10 @@ foreach($finder as $file){
     } catch (PhpParser\Error $e) {
         //echo "aa";
     }
-
+    if(in_array('-y',$argv)){
+        $yara['yarapath'] = $cmd_arr['y'];
+        $yaracheck = new Yara($yara);
+        $yaracheck->command();
+    }
 }
+    
