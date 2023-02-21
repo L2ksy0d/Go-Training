@@ -4,3 +4,6 @@
 希望早日写出来自己的开源Go安全工具捏
 
 # Day-List
+
+* Day1：Golang Basic
+* Day2：分支语句、label与goto、函数
