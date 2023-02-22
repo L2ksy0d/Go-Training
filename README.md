@@ -7,4 +7,4 @@
 
 * Day1：Golang Basic
 * Day2：分支语句、label与goto、函数
-* Day3: defer、数组
+* Day3: defer、数组、切片
