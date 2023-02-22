@@ -31,6 +31,7 @@ func SliceDemo() {
 
 	//切片动态追加使用append
 	//追加之后，底层将创建新的数组，不再引用原数组
+	//每次append时，如果发现cap已经不足以给len使用，就会重新分配原cap两倍的容量，把原切片里已有内容全部迁移过去
 	s1 = append(s1, 666, 777, 888)
 	fmt.Println(s1)
 	s1[0] = 999
@@ -42,4 +43,18 @@ func SliceDemo() {
 	s5 := make([]int, 2)
 	copy(s5, s1)
 	fmt.Println(s5) //[999 666]
+
+
+	//切片截取有两个冒号的情况
+	//s[start:end:max]表示截取的长度是[end - start],但实际引用的数组为[start : max]
+	data := [...]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	v := data[:6:8]
+	fmt.Println(v)
+	fmt.Println(len(v))
+	fmt.Println(cap(v))
+	/*
+	[0 1 2 3 4 5]
+	6
+	8
+	*/
 }
