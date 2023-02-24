@@ -9,3 +9,4 @@
 * Day2：分支语句、label与goto、函数
 * Day3: defer、数组、切片
 * Day4：map、struct、method
+* Day5：interface
