@@ -10,3 +10,4 @@
 * Day3: defer、数组、切片
 * Day4：map、struct、method
 * Day5：interface
+* Day6:struct的练习题
