@@ -6,7 +6,10 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 type Student struct {
 	Id    int
@@ -16,22 +19,20 @@ type Student struct {
 }
 
 type Person struct {
-	Title string
-	Info  []*Student
+	Info []*Student
 }
 
-func (p *Person) ShowStudent(s *Person) {
-	Student_list := s.Info
-	for _, v := range Student_list {
+func (p *Person) ShowStudent() {
+	for _, v := range p.Info {
 		fmt.Println("学生信息如下：")
 		fmt.Println("id：", v.Id)
 		fmt.Println("name：", v.Name)
 		fmt.Println("age：", v.Age)
-		fmt.Println("score：", v.Score)
+		fmt.Print("score：", v.Score)
 	}
 }
 
-func (p *Person) AddStudent(s *Person) {
+func (p *Person) AddStudent() {
 	fmt.Println("您现在要添加一名学生")
 	var (
 		id    int
@@ -43,32 +44,58 @@ func (p *Person) AddStudent(s *Person) {
 	fmt.Scanf("%d %s %d %d", &id, &name, &age, &score)
 	fmt.Printf("您录入的学生ID为%d,名字是\"%s\",%d岁,成绩是%d\n", id, name, age, score)
 	stu := &Student{Id: id, Name: name, Age: age, Score: score}
-	s.Info = append(s.Info, stu)
+	p.Info = append(p.Info, stu)
 }
 
-//func (s *Student) EditStudent() string {}
+func (p *Person) EditStudent() {
+	fmt.Println("您现在要编辑一名学生的信息")
+	var (
+		id    int
+		name  string
+		age   int
+		score int
+		exist bool = false
+	)
+	fmt.Print("请输入更新的信息: ")
+	fmt.Scanf("%d %s %d %d", &id, &name, &age, &score)
+	for _, v := range p.Info {
+		if id == v.Id {
+			fmt.Printf("您录入的学生ID为%d,名字是\"%s\",%d岁,成绩是%d\n", id, name, age, score)
+			stu := &Student{Id: id, Name: name, Age: age, Score: score}
+			p.Info = append(p.Info, stu)
+			exist = true
+		}
+	}
+	if !exist {
+		fmt.Println("输入的学生信息不存在")
+	}
+}
+
+//func (p *Person) DeleteStudent() {
 //
-//func (s *Student) DeleteStudent() string {}
+//}
 
 func main() {
 	fmt.Println("Day6 Prepare")
 	//映射使用map实现
 	sysinfo := &Person{
-		Title: "class-1",
-		Info:  make([]*Student, 0, 200),
+		Info: make([]*Student, 0, 200),
 	}
-	sysinfo.AddStudent(sysinfo)
-	sysinfo.ShowStudent(sysinfo)
-	//var select int
-	//fmt.Scanf("请输入您的选项", &select)
-	//switch {
-	//case select = 0:
-	//	ShowStudent(systeminfo)
-	//case select = 1:
-	//	AddStudent(&systeminfo)
-	//case select = 2:
-	//	EditStudent()
-	//case select = 3:
-	//	DeleteStudent()
-	//}
+
+	for {
+		var chose string
+		fmt.Printf("请输入你的选项：\n")
+		fmt.Scanf("%s\n", &chose)
+
+		switch {
+		case chose == "add":
+			sysinfo.AddStudent()
+		case chose == "edit":
+			sysinfo.EditStudent()
+		case chose == "show":
+			sysinfo.ShowStudent()
+		case chose == "exit":
+			os.Exit(0)
+		}
+	}
 }

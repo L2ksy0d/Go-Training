@@ -10,4 +10,5 @@
 * Day3: defer、数组、切片
 * Day4：map、struct、method
 * Day5：interface
-* Day6:struct的练习题
+* Day6：struct的练习题
+* Day7：time、flag库  Day6练习题优化
