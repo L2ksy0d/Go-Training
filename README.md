@@ -17,3 +17,4 @@
 * Day10:channel和锁
 * Day11:锁 channel练习
 * Day12:Socket编程
+* Day13:logrus学习 尝试编写连通测试脚本
